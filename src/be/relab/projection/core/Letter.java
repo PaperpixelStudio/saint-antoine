@@ -2,6 +2,8 @@ package be.relab.projection.core;
 
 import be.relab.projection.animation.Animable;
 import be.relab.projection.animation.Animation;
+import processing.core.PApplet;
+import processing.core.PVector;
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,21 +14,60 @@ import be.relab.projection.animation.Animation;
  */
 public class Letter implements Animable {
 
+    PVector position;
+    float angle=0;
+    String content;
+    Animation animation;
+    float size=190;
 
+    Letter(String l){
+        content = l;
+    }
 
+    Letter(char c){
+        content = String.valueOf(c);
+    }
 
-    void display(){
+    public void display(Projection p){
+        animate();
+
+        p.canvas.pushMatrix();
+        p.canvas.translate(position.x, position.y);
+        p.canvas.rotate(PApplet.radians(angle));
+
+        p.canvas.strokeWeight(14);
+        p.canvas.textFont(p.font);
+        p.canvas.textSize(size);
+        p.canvas.text(content,0,0);
+        p.canvas.popMatrix();
+
 
     }
 
     @Override
     public void animate() {
-        //To change body of implemented methods use File | Settings | File Templates.
+        if(animation != null){
+            animation.animate(this);
+        }
     }
 
     @Override
     public void setAnimation(Animation a) {
+       animation = a;
 
+    }
 
+    public void setPosition(PVector p){
+        position = p.get();
+    }
+
+    public void setAngle(float a){
+        angle = a;
+    }
+    public void setSize(float s){
+        size = s;
+    }
+    public float getSize(){
+        return size;
     }
 }

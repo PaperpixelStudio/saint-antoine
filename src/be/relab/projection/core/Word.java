@@ -1,8 +1,6 @@
 package be.relab.projection.core;
 
-import be.relab.projection.animation.Animable;
-import be.relab.projection.animation.Animation;
-import be.relab.projection.animation.WordAnimation;
+import be.relab.projection.animation.*;
 import processing.core.PVector;
 
 import java.io.InvalidClassException;
@@ -20,22 +18,39 @@ public class Word implements Animable {
 
     Animation animation;
     protected ArrayList<Letter> letters;
-
+    protected Projection parent;
     protected int lineNumber;
     protected PVector position;
 
     protected float size;
 
-    Word(String word){
+    Word(Projection p,String word, int lineN){
+        parent = p;
+        lineNumber = lineN;
+        position = new PVector();
+        letters = new ArrayList<Letter>();
+        setPosFromLine();
+
+       for(int i = 0; i < word.length(); i++){
+           Letter l =  new Letter(word.charAt(i));
+           l.setPosition(new PVector(position.x+(p.vitRectWidth*i)+(p.colonne*i)-(10*i)+parent.vitRectWidth/2, position.y+parent.vitRectHeight));
+           LetterChangeSize la = new LetterChangeSize(parent);
+           l.setAnimation(la);
+           letters.add(l);
+       }
+    }
+    private void setPosFromLine(){
+        position.y = (70+parent.vitRectHeight)+(parent.vitRectHeight*lineNumber)+5;
+        position.x = parent.marginLeft;
+
 
     }
-
     public void display(){
         animate();
         Iterator i = letters.iterator();
         while(i.hasNext()){
             Letter l = (Letter) i.next();
-            l.display();
+            l.display(parent);
 
 
         }

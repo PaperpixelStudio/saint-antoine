@@ -1,5 +1,7 @@
 package be.relab.projection.animation;
 
+import be.relab.projection.core.Projection;
+
 /**
  * Created with IntelliJ IDEA.
  * User: MacBookPro17
@@ -10,4 +12,14 @@ package be.relab.projection.animation;
 public class WordAnimation extends Animation{
 
 
+    WordAnimation(Projection p) {
+        super(p);
+    }
+
+
+
+    @Override
+    public void animate(Animable a) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
 }

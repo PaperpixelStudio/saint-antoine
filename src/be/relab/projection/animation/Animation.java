@@ -1,5 +1,7 @@
 package be.relab.projection.animation;
 
+import be.relab.projection.core.Projection;
+
 /**
  * Created with IntelliJ IDEA.
  * User: MacBookPro17
@@ -10,6 +12,10 @@ package be.relab.projection.animation;
 public abstract class Animation {
 
     protected Animable obj;
+    protected Projection parent;
+    Animation(Projection p){
+        parent = p;
+    }
     public abstract void animate(Animable a);
 
 }

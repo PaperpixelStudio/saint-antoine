@@ -27,7 +27,7 @@ public class Grid {
                 p.canvas.rect(x,y,p.vitRectWidth,p.vitRectHeight);
                 p.textSize(10);
 
-               p.canvas.text(p.parseInt(i*4+j),x+p.vitRectWidth/2,y+p.vitRectHeight);
+               // p.canvas.text(p.parseInt(i*4+j),x+p.vitRectWidth/2,y+p.vitRectHeight);
 
 
             }

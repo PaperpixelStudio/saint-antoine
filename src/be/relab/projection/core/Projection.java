@@ -25,6 +25,7 @@ public final class Projection extends PApplet {
     ControlP5 cp5;
     ControlFrame cf;
 
+    PFont font;
     System system;
 
     SyphonServer server;
@@ -63,6 +64,7 @@ public final class Projection extends PApplet {
 
 
     Client client;
+    Word word;
 
     static public void main(String args[]){
         PApplet.main(new String[] {"be.relab.projection.core.Projection"});
@@ -92,11 +94,16 @@ public final class Projection extends PApplet {
         cp5 = new ControlP5(this);
         cf = new ControlFrame(this, 400, 400, "Controls");
 
-        client = new Client(this, "188.165.193.200",14240);
+        // client = new Client(this, "188.165.193.200",14240);
+
+        word = new Word(this, "test",1);
+        font = createFont("ElectronicHighwaySign",200,true);
+
 
     }
 
     public void draw(){
+        canvas.textFont(font);
         fft.forward(input.mix);
         for (int i=0;i<fft.avgSize();i++) {
             // le son modifie le vent
@@ -132,7 +139,9 @@ public final class Projection extends PApplet {
         wind.mult(0);
         canvas.textSize(60);
 
-        grid.display(this);
+
+        word.display();
+        // grid.display(this);
         //canvas.popMatrix();
         //canvas.rotate(-PI/2);
         //canvas.translate(-height, 0);
