@@ -39,7 +39,7 @@ class Particle {
 
         mass=parent.random(40, 120);
         mass *= sizeModifier;
-        lifespan = parent.random(250);
+        lifespan = parent.random(270);
     }
 
     void applyForce(PVector force) {
@@ -93,18 +93,15 @@ class Particle {
     void render() {
         parent.canvas.noStroke();
         parent.canvas.textAlign(PConstants.CENTER);
-        parent.canvas.pushMatrix();
-        parent.canvas.rotate(parent.radians(lifespan));
-        parent.canvas.popMatrix();
         parent.canvas.fill(255);
         parent.canvas.colorMode(PConstants.HSB);
-        // canvas.fill(frameCount%255, 100, 100, lifespan);
-
-        // image(img, location.x, location.y, 40, 40);
-
         parent.canvas.textSize(mass);
-        parent.canvas.text(character, location.x, location.y);
+        parent.canvas.pushMatrix();
+        parent.canvas.translate(location.x,location.y);
+        parent.canvas.rotate(parent.radians(lifespan));
 
+        parent.canvas.text(character, 0, 0);
+        parent.canvas.popMatrix();
         parent.canvas.colorMode(PConstants.RGB);
     }
     void addToCanvas(PGraphics c) {

@@ -1,18 +1,18 @@
 package be.relab.projection.core;
 
 import processing.core.*;
+// import processing.net.*;
 // syphon
 import codeanticode.syphon.*;
 // audio
-import ddf.minim.spi.*;
-import ddf.minim.signals.*;
+
 import ddf.minim.*;
 import ddf.minim.analysis.*;
-import ddf.minim.ugens.*;
-import ddf.minim.effects.*;
 // utils
 import java.util.Iterator;
 import java.util.Random;
+
+
 // control
 import controlP5.*;
 import be.relab.projection.controls.*;
@@ -46,6 +46,9 @@ public final class Projection extends PApplet {
     Minim minim;
     AudioInput input;
     FFT fft;
+
+    public Grid grid;
+
     float mediumheights=0;
 
     // control variables
@@ -81,8 +84,9 @@ public final class Projection extends PApplet {
         fft.linAverages(30);
 
         // various & helpers
-        // vitrail = loadImage("vitrail.png");
+        vitrail = loadImage("vitrail.png");
 
+        grid = new Grid();
         // controls
         cp5 = new ControlP5(this);
         cf = new ControlFrame(this, 400, 400, "Controls");
@@ -125,7 +129,7 @@ public final class Projection extends PApplet {
         wind.mult(0);
         canvas.textSize(60);
 
-        drawRect();
+        grid.display(this);
         //canvas.popMatrix();
         canvas.rotate(-PI/2);
         canvas.translate(-height, 0);
@@ -135,7 +139,7 @@ public final class Projection extends PApplet {
         pushMatrix();
         rotate(-PI/2);
         translate(-height, 0);
-        // image(vitrail, 0, 0);
+        image(vitrail, 0, 0);
         popMatrix();
         //tint(255, 200);
         image(canvas, 0, 0);

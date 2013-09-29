@@ -9,4 +9,6 @@ package be.relab.projection.constants;
  */
 public final class ProjectionConstants {
 
+    public float gridWidth = 100.f;
+
 }
