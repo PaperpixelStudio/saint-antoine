@@ -21,10 +21,17 @@ public class Grid {
         p.canvas.stroke(255);
         p.canvas.noFill();
         for(float i = 0; i < 4; i+=1){
-            for(float y = 0; y < 4; y+=1){
-                p.canvas.rect(p.marginLeft+(p.vitRectWidth*y)+p.colonne*y-10*y,(70+p.vitRectHeight)+(p.vitRectHeight*i)+5,p.vitRectWidth,p.vitRectHeight);
+            for(float j = 0; j < 4; j+=1){
+                float x = p.marginLeft+(p.vitRectWidth*j)+p.colonne*j-10*j;
+                float y = (70+p.vitRectHeight)+(p.vitRectHeight*i)+5;
+                p.canvas.rect(x,y,p.vitRectWidth,p.vitRectHeight);
+                p.textSize(10);
+
+               p.canvas.text(p.parseInt(i*4+j),x+p.vitRectWidth/2,y+p.vitRectHeight);
+
 
             }
+
         }
         p.canvas.fill(255);
     }
