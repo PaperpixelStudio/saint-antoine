@@ -1,7 +1,7 @@
 package be.relab.projection.core;
 
 import processing.core.*;
-// import processing.net.*;
+import processing.net.*;
 // syphon
 import codeanticode.syphon.*;
 // audio
@@ -28,9 +28,6 @@ public final class Projection extends PApplet {
     System system;
 
     SyphonServer server;
-
-
-   PFont font;
 
     float repSize = 0;
     PVector gravity = new PVector(0, .1f);
@@ -63,6 +60,10 @@ public final class Projection extends PApplet {
     float colonne = 43;
     float vitRectWidth = 114;
     float vitRectHeight = 157;
+
+
+    Client client;
+
     static public void main(String args[]){
         PApplet.main(new String[] {"be.relab.projection.core.Projection"});
     }
@@ -90,6 +91,8 @@ public final class Projection extends PApplet {
         // controls
         cp5 = new ControlP5(this);
         cf = new ControlFrame(this, 400, 400, "Controls");
+
+        client = new Client(this, "188.165.193.200",14240);
 
     }
 
@@ -131,8 +134,8 @@ public final class Projection extends PApplet {
 
         grid.display(this);
         //canvas.popMatrix();
-        canvas.rotate(-PI/2);
-        canvas.translate(-height, 0);
+        //canvas.rotate(-PI/2);
+        //canvas.translate(-height, 0);
         canvas.endDraw();
         server.sendImage(canvas);
 
@@ -146,32 +149,6 @@ public final class Projection extends PApplet {
         noTint();
     }
 
-
-    public void drawRect() {
-  /*
-  canvas.rect(marginLeft, 75, 114, 153);
-  canvas.fill(255, 0, 0);
-  canvas.rect(marginLeft+vitRectWidth, 75, colonne, 153);
-  canvas.fill(255);
-  canvas.rect(colonne+vitRectWidth, 75, 114, 153);
-  canvas.fill(255, 0, 0);
-  canvas.rect(2*vitRectWidth+colonne, 75, colonne, 153);
-  canvas.fill(255);
-  canvas.rect(2*colonne+2*vitRectWidth-10, 75, 114, 153);
-  canvas.fill(255, 0, 0);
-  canvas.rect(2*colonne+3*vitRectWidth-10, 75, colonne-10, 153);
-  canvas.fill(255);
-  canvas.rect(3*colonne+3*vitRectWidth-20, 75, vitRectWidth, 153);
-  */
-        // canvas.ellipse(340,740,50,50);
-        // canvas.ellipse(217,741,50,50);
-        canvas.textSize(230);
-        canvas.textAlign(CENTER);
-        canvas.text("h",67,221);
-        canvas.text("e",151+67,221);
-        canvas.text("ll",2*151+67,221);
-        canvas.text("0",3*151+67,221);
-    }
 
     public void keyPressed() {
         if(key == CODED){
@@ -226,6 +203,12 @@ public final class Projection extends PApplet {
     }
     public Projection getContext(){
         return this;
+    }
+
+    public void clientEvent(Client c){
+        String data;
+        data = c.readStringUntil(new String("%").charAt(0));
+        println(data);
     }
 
 }

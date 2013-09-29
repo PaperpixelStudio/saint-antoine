@@ -39,15 +39,13 @@ public class System {
             Particle p = it.next();
             // if(i==0) println(p.location);
             p.run();
-
             if (p.isDead()) {
-
                 it.remove();
             }
             //println("part. qty :"+parts.size());
             i++;
         }
-        ///*
+        /*
         for (Repeller r:repellers) {
             r.display();
         }
