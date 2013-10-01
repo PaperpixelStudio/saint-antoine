@@ -2,6 +2,7 @@ package be.relab.projection.animation;
 
 import be.relab.projection.core.Letter;
 import be.relab.projection.core.Projection;
+import processing.core.PApplet;
 
 /**
  * Created with IntelliJ IDEA.
@@ -27,7 +28,8 @@ public class LetterChangeSize extends LetterAnimation {
             l.setSize(l.getSize()+1);
         }
 
-        if(l.getSize() > 190 || l.getSize() < 10){
+        // l.setAngle(- l.getSize());
+        if(l.getSize() > 360 || l.getSize() < 10){
             grow = ! grow;
         }
     }

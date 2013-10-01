@@ -1,7 +1,5 @@
 package be.relab.projection.core;
 
-import be.relab.projection.constants.ProjectionConstants;
-
 /**
  * Created with IntelliJ IDEA.
  * User: MacBookPro17
@@ -11,23 +9,21 @@ import be.relab.projection.constants.ProjectionConstants;
  */
 public class Grid {
     Projection parent;
-    float width;
     Grid(){
-        width = 100;
     }
 
     public void display(Projection p){
         p.canvas.strokeWeight(3);
         p.canvas.stroke(255);
         p.canvas.noFill();
-        for(float i = 0; i < 4; i+=1){
+        for(float i = 0; i < p.LINES; i+=1){
             for(float j = 0; j < 4; j+=1){
-                float x = p.marginLeft+(p.vitRectWidth*j)+p.colonne*j-10*j;
-                float y = (70+p.vitRectHeight)+(p.vitRectHeight*i)+5;
-                p.canvas.rect(x,y,p.vitRectWidth,p.vitRectHeight);
+                float x = p.MARGIN_LEFT +(p.RECT_WIDTH *j)+p.COLONNE *j-10*j;
+                float y = p.VIT_POS_Y+(p.RECT_HEIGHT)+(p.RECT_HEIGHT *i)+5;
+                p.canvas.rect(x,y,p.RECT_WIDTH,p.RECT_HEIGHT);
                 p.textSize(10);
 
-               // p.canvas.text(p.parseInt(i*4+j),x+p.vitRectWidth/2,y+p.vitRectHeight);
+               // p.canvas.text(p.parseInt(i*4+j),x+p.RECT_WIDTH/2,y+p.RECT_HEIGHT);
 
 
             }

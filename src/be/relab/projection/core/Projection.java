@@ -9,6 +9,9 @@ import codeanticode.syphon.*;
 import ddf.minim.*;
 import ddf.minim.analysis.*;
 // utils
+import java.net.ConnectException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Random;
 
@@ -56,28 +59,38 @@ public final class Projection extends PApplet {
     float oriX, partX = height/2;
     float oriY, partY = width;
     float gravMod = 0;
+    // new coordinates
+    // TODO attach these to controlP5
+    float MARGIN_LEFT = 10;
+    float COLONNE = 43;
+    float RECT_WIDTH = 114;
+    float RECT_HEIGHT = 157;
+    float MARGIN_BOTTOM = 5;
+    float VIT_POS_Y = 70;
+    int LINES=4;
 
-    float marginLeft = 10;
-    float colonne = 43;
-    float vitRectWidth = 114;
-    float vitRectHeight = 157;
 
-
+    boolean mustUpdateGrid=false;
     Client client;
     Word word;
+    Word word2;
+    ArrayList<Message> messages;
+
+
+    ArrayList<Message>buffer;
 
     static public void main(String args[]){
         PApplet.main(new String[] {"be.relab.projection.core.Projection"});
     }
 
     public void setup(){
-        size(1024, 576, P3D);
+        size(1024, 576, OPENGL);
 
         // particles
         system = new System(this);
 
         // syphon (graphics+server)
-        canvas = createGraphics(1024, 576, P3D);
+        canvas = createGraphics(1024, 576, OPENGL);
         server = new SyphonServer(this, "Particles");
 
         // sound
@@ -94,16 +107,35 @@ public final class Projection extends PApplet {
         cp5 = new ControlP5(this);
         cf = new ControlFrame(this, 400, 400, "Controls");
 
-        // client = new Client(this, "188.165.193.200",14240);
+       client = new Client(this, "188.165.193.200",14240);
 
-        word = new Word(this, "test",1);
-        font = createFont("ElectronicHighwaySign",200,true);
+        mustUpdateGrid = false;
+        messages = new ArrayList<Message>();
+        buffer  = new ArrayList<Message>(20);
 
 
+        // TEST
+        Message m = new Message(this);
+        m.addWord(new Word(this,"oooo",0));
+        messages.add(m);
+        m = new Message(this, "hello is it me you're looking for");
+        // m.addWord(new Word(this, "hello is it me you're looking for?",1));
+        messages.add(m);
+
+
+
+        // font = createFont("ElectronicHighwaySign",190,true);
+         font = createFont("Sans",190,true);
+
+        canvas.textMode(SHAPE);
     }
 
     public void draw(){
+        canvas.textAlign(CENTER,CENTER);
         canvas.textFont(font);
+        canvas.textSize(90);
+
+        // canvas.textFont(font);
         fft.forward(input.mix);
         for (int i=0;i<fft.avgSize();i++) {
             // le son modifie le vent
@@ -123,7 +155,7 @@ public final class Projection extends PApplet {
         background(0);
         canvas.blendMode(ADD);
         canvas.beginDraw();
-        canvas.background(0, 100);
+        canvas.background(0);
         // canvas.pushMatrix();
         canvas.rotate(-PI/2);
         canvas.translate(-height, 0);
@@ -135,27 +167,29 @@ public final class Projection extends PApplet {
         system.applyRepellers();
         system.run();
         //*/
-        if (mousePressed) repSize++;
         wind.mult(0);
-        canvas.textSize(60);
+        // canvas.textSize(60);
 
 
-        word.display();
-        // grid.display(this);
-        //canvas.popMatrix();
-        //canvas.rotate(-PI/2);
-        //canvas.translate(-height, 0);
+        displayMessages();
+        grid.display(this);
+
         canvas.endDraw();
         server.sendImage(canvas);
 
         pushMatrix();
         rotate(-PI/2);
         translate(-height, 0);
-        image(vitrail, 0, 0);
+       // image(vitrail, 0, 0);
         popMatrix();
         //tint(255, 200);
         image(canvas, 0, 0);
         noTint();
+        /*
+        if(! client.active()){
+            client = new Client(this, "188.165.193.200",14240);
+       }
+       */
     }
 
 
@@ -210,14 +244,43 @@ public final class Projection extends PApplet {
         println("translated coord x : "+map(mouseY,0,height,height,0)+" y: "+mouseX);
 
     }
-    public Projection getContext(){
-        return this;
+
+    public void updatePositions(){
+        mustUpdateGrid = true;
+    }
+
+    public void displayMessages(){
+        Iterator<Message> it = messages.iterator();
+        while(it.hasNext()){
+            Message m = (Message) it.next();
+            m.display();
+            if(m.isDead()){
+                it.remove();
+            }
+
+        }
+        if(mustUpdateGrid) mustUpdateGrid=false;
     }
 
     public void clientEvent(Client c){
-        String data;
-        data = c.readStringUntil(new String("%").charAt(0));
-        println(data);
+
+        // le protocole: [type: 0(sms)-1(twitter)]$|>>[sender]$|>>[text]<<|$
+        byte[] data = new byte[250];
+
+        if(c.readBytesUntil(10,data) > 16){
+            Message m = new Message(this, new String(data));
+             if(buffer.size() <=4){
+                 buffer.add(m);
+             }else if(buffer.size() == 5){
+                messages=buffer;
+                buffer = new ArrayList<Message>(4);
+             }
+        }
+        data = null;
+    }
+
+    void disconnectEvent(Client c){
+        // todo tester 5 fois la reconnexion toutes les 10 secondes
     }
 
 }

@@ -27,7 +27,7 @@ public class ControlFrame extends PApplet {
         this.init();
         f.setTitle(_name);
         f.setSize(this.w, this.h);
-        f.setLocation(1025, 10);
+        f.setLocation(1025,10);
         f.setResizable(false);
         f.setVisible(true);
     }
@@ -40,10 +40,17 @@ public class ControlFrame extends PApplet {
         cp5.addSlider("Part size").plugTo(parent, "partSizeModifier").setRange(0.1f,2).setValue(1).setPosition(10, 30);
 
         cp5.addSlider("particles X").plugTo(parent, "partX").setRange(0, 578).setValue(289).setPosition(10, 50);
-        cp5.addSlider("particles y").plugTo(parent, "partY").setRange(0,1024).setValue(1024).setPosition(10, 80);
+        cp5.addSlider("particles y").plugTo(parent, "partY").setRange(0,1024).setValue(1024).setPosition(10, 70);
 
         cp5.addSlider("gravity").plugTo(parent, "gravMod").setRange(-100, 100).setValue(0).setPosition(10, 100);
-        cp5.addSlider("grid width").plugTo(parent.grid, "width").setRange(-100,100).setValue(0).setPosition(10, 120);
+        // cp5.addSlider("grid width").plugTo(parent.grid, "width").setRange(-100,100).setValue(0).setPosition(10, 120);
+
+        cp5.addSlider("Rect width").plugTo(parent,"RECT_WIDTH").setRange(95,120).setValue(114).setPosition(130,10);
+        cp5.addSlider("Rect Height").plugTo(parent,"RECT_HEIGHT").setRange(100,200).setValue(157).setPosition(130,30);
+        cp5.addSlider("colonne").plugTo(parent,"COLONNE").setRange(15,60).setValue(43).setPosition(130,50);
+        cp5.addSlider("Margin bottom").plugTo(parent,"MARGIN_BOTTOM").setRange(0,20).setValue(5).setPosition(130,70);
+        cp5.addSlider("Position Y").plugTo(parent,"VIT_POS_Y").setRange(0,20).setValue(5).setPosition(130,90);
+        cp5.addButton("Update positions").plugTo(parent,"updatePositions").setPosition(10,150);
   /*
     cp5.addRadioButton("drawingType").plugTo(parent, "drawingType").setPosition(10,100)
        .addItem("H lines", 1).addItem("V Lines",2).addItem("Triangles",3).activate(0);

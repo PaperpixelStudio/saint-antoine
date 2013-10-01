@@ -4,6 +4,7 @@ import be.relab.projection.animation.Animable;
 import be.relab.projection.animation.Animation;
 import processing.core.PApplet;
 import processing.core.PVector;
+import sun.plugin2.message.PrintAppletMessage;
 
 /**
  * Created with IntelliJ IDEA.
@@ -18,7 +19,7 @@ public class Letter implements Animable {
     float angle=0;
     String content;
     Animation animation;
-    float size=190;
+    float size=160;
 
     Letter(String l){
         content = l;
@@ -35,10 +36,12 @@ public class Letter implements Animable {
         p.canvas.translate(position.x, position.y);
         p.canvas.rotate(PApplet.radians(angle));
 
-        p.canvas.strokeWeight(14);
-        p.canvas.textFont(p.font);
+        // p.canvas.strokeWeight(14);
+        // p.canvas.textFont(p.font);
         p.canvas.textSize(size);
+
         p.canvas.text(content,0,0);
+
         p.canvas.popMatrix();
 
 
@@ -61,6 +64,9 @@ public class Letter implements Animable {
         position = p.get();
     }
 
+    public PVector getPosition(){
+        return position;
+    }
     public void setAngle(float a){
         angle = a;
     }
