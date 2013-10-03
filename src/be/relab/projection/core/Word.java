@@ -68,10 +68,15 @@ public class Word implements Animable {
         setPosFromLine();
         for(int i=0;i<letters.size(); i++){
             Letter l = (Letter) letters.get(i);
+            float posX = (parent.RECT_WIDTH *(i%4))+(parent.COLONNE *(i%4))/*-(10*i)*/+parent.RECT_WIDTH /2;
+            parent.println("pos x "+posX+" i%3 "+i%3+": "+i%3);
+            parent.println(" parent rectwidth*i%3: "+parent.RECT_WIDTH * i%3);
             PVector pos = new PVector(
-                    position.x+(parent.RECT_WIDTH *i+1%4)+(parent.COLONNE *i+1%4)/*-(10*i)*/+parent.RECT_WIDTH /2,
-                    position.y+(parent.RECT_HEIGHT-5)*i*4
+                    position.x+posX,
+                    position.y+(parent.RECT_HEIGHT-5)*i*3
              );
+
+
             l.setPosition(pos);
 
         }

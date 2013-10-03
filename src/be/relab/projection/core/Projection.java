@@ -122,7 +122,7 @@ public final class Projection extends PApplet {
 
          message = new Message(this, "Welcome to FAB W.");
         // font = createFont("ElectronicHighwaySign",190,true);
-        font = createFont("Consolas- Bold",190,true);
+        font = createFont("Consolas-Bold",190,true);
 
         canvas.textMode(SHAPE);
     }
