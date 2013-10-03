@@ -45,12 +45,20 @@ public class ControlFrame extends PApplet {
         cp5.addSlider("gravity").plugTo(parent, "gravMod").setRange(-100, 100).setValue(0).setPosition(10, 100);
         // cp5.addSlider("grid width").plugTo(parent.grid, "width").setRange(-100,100).setValue(0).setPosition(10, 120);
 
-        cp5.addSlider("Rect width").plugTo(parent,"RECT_WIDTH").setRange(95,120).setValue(114).setPosition(130,10);
-        cp5.addSlider("Rect Height").plugTo(parent,"RECT_HEIGHT").setRange(100,200).setValue(157).setPosition(130,30);
-        cp5.addSlider("colonne").plugTo(parent,"COLONNE").setRange(15,60).setValue(43).setPosition(130,50);
-        cp5.addSlider("Margin bottom").plugTo(parent,"MARGIN_BOTTOM").setRange(0,20).setValue(5).setPosition(130,70);
-        cp5.addSlider("Position Y").plugTo(parent,"VIT_POS_Y").setRange(0,20).setValue(5).setPosition(130,90);
-        cp5.addButton("Update positions").plugTo(parent,"updatePositions").setPosition(10,150);
+        cp5.addSlider("Rect width").plugTo(parent,"RECT_WIDTH").setRange(95,120).setValue(114).setPosition(150,10).setId(0);
+        cp5.addSlider("Rect Height").plugTo(parent,"RECT_HEIGHT").setRange(100,200).setValue(183.83f).setPosition(150,30).setId(0);
+        cp5.addSlider("colonne").plugTo(parent,"COLONNE").setRange(0,150).setValue(43).setPosition(150,50).setId(0);
+        cp5.addSlider("Margin bottom").plugTo(parent,"MARGIN_BOTTOM").setRange(0,20).setValue(5).setPosition(150,70).setId(0);
+        cp5.addSlider("Margin Left").plugTo(parent,"MARGIN_LEFT").setRange(-100,100).setValue(39.39f).setPosition(170,90).setId(0);
+        cp5.addSlider("Position Y").plugTo(parent,"VIT_POS_Y").setRange(-300,300).setValue(-130.30f).setPosition(190,110).setId(0);
+        // cp5.addButton("Update positions").plugTo(parent,"updatePositions").setPosition(10,150);
+
+        cp5.addToggle("displayMess").plugTo(parent).setValue(true).setPosition(10,height-70);
+        cp5.addToggle("displayParts").plugTo(parent).setValue(false).setPosition(90,height-70);
+        cp5.addToggle("animateWords").plugTo(parent).setValue(true).setPosition(10,height-140);
+        cp5.addToggle("animateLetters").plugTo(parent).setValue(true).setPosition(90,height-140);
+        cp5.addToggle("flip").plugTo(parent).setValue(true).setPosition(90,height-170);
+
   /*
     cp5.addRadioButton("drawingType").plugTo(parent, "drawingType").setPosition(10,100)
        .addItem("H lines", 1).addItem("V Lines",2).addItem("Triangles",3).activate(0);
@@ -60,6 +68,18 @@ public class ControlFrame extends PApplet {
 
     }
 
+
+    public void keyPressed() {
+        // default properties load/save key combinations are
+        // alt+shift+l to load properties
+        // alt+shift+s to save properties
+        if (key=='s') {
+            cp5.saveProperties(("vitrail.properties"));
+        }
+        else if (key=='l') {
+            cp5.loadProperties(("vitrail.properties"));
+        }
+    }
     public void draw() {
     }
     public ControlP5 control() {

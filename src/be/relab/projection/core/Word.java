@@ -20,14 +20,17 @@ public class Word implements Animable {
     Animation animation;
     protected ArrayList<Letter> letters;
     protected Projection parent;
-    protected int lineNumber;
+    protected int lineNumber,colNumber;
     protected PVector position;
+    protected  int letterN;
 
     protected float size;
 
     public Word(Projection p,String word, int lineN){
         parent = p;
-        lineNumber = lineN;
+      lineNumber = lineN;
+        letterN = word.length();
+        //colNumber = colN;
         position = new PVector();
         letters = new ArrayList<Letter>();
         setPosFromLine();
@@ -37,32 +40,45 @@ public class Word implements Animable {
 
     private void setPosFromLine(){
         position.x = parent.MARGIN_LEFT;
-        position.y = parent.VIT_POS_Y+(parent.RECT_HEIGHT)+(parent.RECT_HEIGHT *lineNumber)+5;
+        position.y = parent.VIT_POS_Y +(parent.RECT_HEIGHT)+(parent.RECT_HEIGHT *lineNumber)+5;
+        //position.x = parent.MARGIN_LEFT+parent.RECT_WIDTH*colNumber+5;
+        // position.y = parent.VIT_POS_Y;
+
+
+
     }
    private void initLetters(String word){
-       for(int i = 0; i < word.length(); i++){
-           Letter l =  new Letter(word.charAt(i));
+       for(int i = 0; i < letterN ; i++){
+           Letter l =  new Letter(parent, word.charAt(i));
            // creates a new Default animation and assign it to letters
            // LetterChangeSize la = new LetterChangeSize(parent);
-           LetterRandomize lr = new LetterRandomize(parent, parent.random(0.0001f,0.9f), parent.random(0.001f,0.9f));
-           // l.setAnimation(lr);
+           //LetterRandomize lr = new LetterRandomize(parent, parent.random(0.0001f,0.9f), parent.random(0.001f,0.9f));
+           LetterAnimation lf = new LetterFall(parent);
+           l.setAnimation(lf);
            letters.add(l);
        }
    }
 
+    private PVector setLetterVertPos(){
+        PVector res = new PVector();
+
+        return res;
+    }
     public void updateLettersPosition(){
+        setPosFromLine();
         for(int i=0;i<letters.size(); i++){
             Letter l = (Letter) letters.get(i);
-            l.setPosition(
-                new PVector(
-                    position.x+(parent.RECT_WIDTH *i)+(parent.COLONNE *i)-(10*i)+parent.RECT_WIDTH /2,
-                    position.y+parent.RECT_HEIGHT-5
-                )
-            );
+            PVector pos = new PVector(
+                    position.x+(parent.RECT_WIDTH *i+1%4)+(parent.COLONNE *i+1%4)/*-(10*i)*/+parent.RECT_WIDTH /2,
+                    position.y+(parent.RECT_HEIGHT-5)*i*4
+             );
+            l.setPosition(pos);
+
         }
     }
 
     public void display(){
+        parent.canvas.point(position.x,position.y);
         animate();
         Iterator i = letters.iterator();
         while(i.hasNext()){
@@ -105,7 +121,7 @@ public class Word implements Animable {
 
     @Override
     public void animate() {
-        if(animation != null){
+        if(animation != null && parent.animateWords){
             animation.animate(this);
         }
     }

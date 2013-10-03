@@ -15,25 +15,32 @@ import sun.plugin2.message.PrintAppletMessage;
  */
 public class Letter implements Animable {
 
-    PVector position;
+    public PVector position;
     float angle=0;
     String content;
     Animation animation;
     float size=160;
+    Projection parent;
 
-    Letter(String l){
+    Letter(Projection p, String l){
+        parent = p;
         content = l;
     }
 
-    Letter(char c){
+    Letter(Projection p, char c){
+        parent=p;
         content = String.valueOf(c);
     }
 
     public void display(Projection p){
+
         animate();
 
         p.canvas.pushMatrix();
         p.canvas.translate(position.x, position.y);
+        if(p.flip){
+            p.canvas.scale(-1,1);
+        }
         p.canvas.rotate(PApplet.radians(angle));
 
         // p.canvas.strokeWeight(14);
@@ -49,13 +56,14 @@ public class Letter implements Animable {
 
     @Override
     public void animate() {
-        if(animation != null){
+        if(animation != null && parent.animateLetters){
             animation.animate(this);
         }
     }
 
     @Override
     public void setAnimation(Animation a) {
+
        animation = a;
 
     }

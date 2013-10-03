@@ -19,10 +19,10 @@ public class Grid {
         for(float i = 0; i < p.LINES; i+=1){
             for(float j = 0; j < 4; j+=1){
                 float x = p.MARGIN_LEFT +(p.RECT_WIDTH *j)+p.COLONNE *j-10*j;
-                float y = p.VIT_POS_Y+(p.RECT_HEIGHT)+(p.RECT_HEIGHT *i)+5;
+                float y = p.VIT_POS_Y+(p.RECT_HEIGHT)+(p.RECT_HEIGHT *i)+p.MARGIN_BOTTOM;
                 p.canvas.rect(x,y,p.RECT_WIDTH,p.RECT_HEIGHT);
-                p.textSize(10);
 
+                // p.textSize(10);
                // p.canvas.text(p.parseInt(i*4+j),x+p.RECT_WIDTH/2,y+p.RECT_HEIGHT);
 
 

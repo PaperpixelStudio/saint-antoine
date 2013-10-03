@@ -15,8 +15,7 @@ public class System {
     ArrayList<Repeller> repellers;
     ArrayList<PVector> locs = new ArrayList<PVector>();
     Projection parent;
-    boolean imageRender = false;
-    PGraphics canvas;
+
 
 
     System(Projection p) {

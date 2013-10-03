@@ -81,6 +81,7 @@ class Particle {
     */
     void display() {
         //stroke(0, lifespan);
+        mass*=sizeModifier;
         parent.noStroke();
 
         // fill(175, lifespan);
@@ -92,13 +93,16 @@ class Particle {
 
     void render() {
         parent.canvas.noStroke();
-        parent.canvas.textAlign(PConstants.CENTER);
         parent.canvas.fill(255);
         parent.canvas.colorMode(PConstants.HSB);
         parent.canvas.textSize(mass);
         parent.canvas.pushMatrix();
         parent.canvas.translate(location.x,location.y);
+
         parent.canvas.rotate(parent.radians(lifespan));
+        if(parent.flip){
+            parent.canvas.scale(-1,1);
+        }
 
         parent.canvas.text(character, 0, 0);
         parent.canvas.popMatrix();

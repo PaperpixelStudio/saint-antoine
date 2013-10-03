@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Class-Path: core.jar jogl-all.jar gluegen-rt.jar jogl-all-natives-linu
+ x-i586.jar jogl-all-natives-linux-amd64.jar gluegen-rt-natives-linux-
+ i586.jar jogl-all-natives-windows-i586.jar gluegen-rt-natives-linux-a
+ md64.jar jogl-all-natives-linux-armv6hf.jar jogl-all-natives-windows-
+ amd64.jar gluegen-rt-natives-windows-i586.jar gluegen-rt-natives-linu
+ x-armv6hf.jar gluegen-rt-natives-windows-amd64.jar jogl-all-natives-m
+ acosx-universal.jar gluegen-rt-natives-macosx-universal.jar core.jar 
+ NextText.jar controlP5.jar jsyphon.jar Syphon.jar jl1.0.jar jsminim.j
+ ar minim.jar mp3spi1.9.4.jar tritonus_aos.jar tritonus_share.jar
+Main-Class: be.relab.projection.core.Projection
+

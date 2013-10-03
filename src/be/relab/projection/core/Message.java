@@ -15,7 +15,7 @@ import java.util.Iterator;
 public class Message {
 
     ArrayList<Word> words;
-    float lifespan=500;
+    float lifespan=2000;
     Projection parent;
     public Message(Projection p){
         parent = p;
@@ -24,11 +24,18 @@ public class Message {
     }
 
     public Message(Projection p, String message){
-        PApplet.println(message);
+
+        // le protocole: [type: 0(sms)-1(twitter)]$|>>[sender]$|>>[text]<<|$
+        String[] parts = message.split("$|>>");
+
         parent =p;
         words = new ArrayList<Word>();
+
         if(! message.contains(" ")){
             words.add(new Word(parent, message, PApplet.parseInt(parent.random(0,3))));
+        }else if(parts.length > 1){
+           String[] wordSplit = parts[2].split(" ");
+            initFromArray(wordSplit);
         }else{
             String[] wordSplit = message.split(" ");
             initFromArray(wordSplit);
@@ -66,10 +73,11 @@ public class Message {
             if(parent.mustUpdateGrid == true){
                 w.updateLettersPosition();
             }
+            parent.canvas.fill(255,lifespan);
             w.display();
         }
-
-        // lifespan--;
+        parent.canvas.fill(255,255);
+        lifespan--;
     }
 
     boolean isDead(){
