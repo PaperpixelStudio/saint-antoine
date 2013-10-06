@@ -17,7 +17,7 @@ public class Letter implements Animable {
 
     public PVector position;
     float angle=0;
-    String content;
+    public String content;
     Animation animation;
     float size=160;
     Projection parent;

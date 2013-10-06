@@ -29,13 +29,16 @@ public class LetterFall extends LetterAnimation{
 
         if(((Letter) l).getPosition().y > 1024){
             ((Letter) l).position.y=0;
-
+            velocity.mult(0);
         }
 
+        PVector force = PVector.div(gravity,((Letter)l).content.charAt(0));
 
         velocity.add(accel);
+        velocity.add(force);
         ((Letter)l).position.add(velocity);
         accel.mult(0);
+
 
 
     }

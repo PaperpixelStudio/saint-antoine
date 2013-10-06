@@ -30,6 +30,7 @@ public final class Projection extends PApplet {
     PFont font;
     System system;
 
+    int retry = 5;
     SyphonServer server;
 
     float repSize = 0;
@@ -47,6 +48,7 @@ public final class Projection extends PApplet {
 
     // control variables
     float soundThreshold = 2.0f;
+    float windMultiplier = .009f;
     float partSizeModifier = 1.0f;
     // modifying origin coords after th -90° flip
     float oriX, partX = height/2;
@@ -62,6 +64,8 @@ public final class Projection extends PApplet {
     float MARGIN_BOTTOM = 5;
     float VIT_POS_Y = 70;
     int LINES=5;
+
+    float G=1;
     PVector[] POSITIONS = new PVector[LINES*4];
 
 
@@ -73,9 +77,10 @@ public final class Projection extends PApplet {
 
     boolean mustUpdateGrid=false;
     Client client;
-    Word word;
-    Word word2;
 
+    int particleLife=300;
+    int partLifeMod;
+    float bang=10.0f;
 
     Message message;
     LinkedList<Message> buffer;
@@ -143,8 +148,28 @@ public final class Projection extends PApplet {
         canvas.translate(-height, 0);
 
         //*
+        for (int i=0;i<fft.avgSize();i++) {
+            // le son modifie le vent
+            float avg = fft.getAvg(i);
+            // println(avg);
+            if(avg > bang){
+                displayParts=true;
+                // println(avg);
+            }
+            if (avg > soundThreshold) {
+                wind.add(0, fft.getAvg(i)*-windMultiplier, 0);
+                particleLife = partLifeMod;
 
-        displayParticles(displayParts);
+            }
+            else {
+                // displayParts=false;
+            }
+        }
+        if(particleLife == 0){
+            displayParts=false;
+        }
+        displayParticles();
+
         // canvas.textSize(60);
         displayMessages();
 
@@ -162,7 +187,7 @@ public final class Projection extends PApplet {
         popMatrix();
         // image(vitrail, 0, 0);
         //tint(255, 200);
-        if(movie != null && message == null){
+        if(movie != null && message == null && !displayParts){
             image(movie,0,0);
             server.sendImage(movie);
         }else{
@@ -170,15 +195,12 @@ public final class Projection extends PApplet {
             server.sendImage(canvas);
         }
         noTint();
-        /*
-        if(! client.active()){
-            client = new Client(this, "188.165.193.200",14240);
-       }
-       */
+        if(mousePressed)repSize+=.003;
+
     }
     public void mouseReleased(){
-        // system.addRepeller(new Repeller(mouseX,mouseY,repSize));
-        // repSize=0;
+        // system.addAttractor(new Attractor(mouseX,mouseY,repSize, 1));
+        //repSize=0;
 
     }
 
@@ -188,28 +210,19 @@ public final class Projection extends PApplet {
 
     }
 
-    public void displayParticles(boolean dp){
-        if(dp == true){
-            for (int i=0;i<fft.avgSize();i++) {
-                // le son modifie le vent
-                float avg = fft.getAvg(i);
-//                println(soundThreshold);
-                if (avg < soundThreshold) {
+    public void displayParticles(){
+        if(displayParts == true){
 
-                    wind.add(0, 2, 0);
-                }
-                else {
-                    wind.add(0, fft.getAvg(i)*-.3f, 0);
-                    //println(avg);
-                }
-            }
             gravity.y = gravMod;
             system.applyForce(wind);
             system.applyForce(gravity);
-            system.applyRepellers();
+            // system.applyRepellers();
+            // system.applyAttractors();
             system.run();
             //*/
             wind.mult(0);
+
+            particleLife--;
         }
     }
 
@@ -247,9 +260,10 @@ public final class Projection extends PApplet {
 
             }
         }else{
-            movie = null;
+           // movie = null;
+            if(message.words.size() > 10) displayParts = false;
             if(millis()-lastUpdate > 1000 )
-            message.display();
+                message.display();
             if(message.isDead()){
 
                 message = null;
@@ -261,7 +275,7 @@ public final class Projection extends PApplet {
     }
 
     public void clientEvent(Client c){
-
+        retry = 5;
         // le protocole: [type: 0(sms)-1(twitter)]$|>>[sender]$|>>[text]<<|$
         byte[] data = new byte[250];
 
@@ -280,6 +294,11 @@ public final class Projection extends PApplet {
 
     void disconnectEvent(Client c){
         // todo tester 5 fois la reconnexion toutes les 10 secondes
+        if(retry > 0){
+            client = new Client(this,"188.165.193.200",8080);
+            retry--;
+        }
+
     }
 
     public void controlEvent(ControlEvent e){

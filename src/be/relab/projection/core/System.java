@@ -13,6 +13,7 @@ import processing.core.*;
 public class System {
     ArrayList<Particle> parts;
     ArrayList<Repeller> repellers;
+    ArrayList<Attractor> attractors;
     ArrayList<PVector> locs = new ArrayList<PVector>();
     Projection parent;
 
@@ -26,6 +27,8 @@ public class System {
     void init() {
         parts = new ArrayList<Particle>();
         repellers = new ArrayList<Repeller>();
+        attractors = new ArrayList<Attractor>();
+
     }
     void run() {
         // parts.add(new Particle(new PVector(width/2, height/2)));
@@ -64,10 +67,21 @@ public class System {
         }
     }
 
+    void applyAttractors(){
+        for(Attractor a:attractors){
+            for (Particle p:parts){
+                p.applyForce(a.attract(p));
+            }
+        }
+    }
+
     void addRepeller(Repeller r) {
         repellers.add(r);
     }
 
+    void addAttractor(Attractor a){
+        attractors.add(a);
+    }
     void addParticle(Particle p) {
         parts.add(p);
     }
